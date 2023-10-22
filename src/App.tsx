@@ -86,16 +86,6 @@ const App = () => {
             <button type="submit" className='bg-red-400 px-4 py-2 rounded-md'>Conectar</button>
           </form>
         )}
-        <div>
-          <h5>Nodos</h5>
-          <div>
-            {nodes.length > 0 && nodes.map((node, index) => (
-              <div key={index} className='border-2 rounded-md border-red-400 w-fit'>
-                <span>{node.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
       <div className='w-[80%]'>
         <div style={{ width: '600px', height: '400px' }}> {/* Set your desired width and height */}
