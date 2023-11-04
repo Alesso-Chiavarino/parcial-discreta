@@ -2,58 +2,24 @@ import './App.css';
 import { Graphviz } from 'graphviz-react';
 import React, { useState, useEffect } from 'react';
 
-const App = () => {
-  interface Node {
-    name: string;
-  }
+type Node = {
+  name: string;
+};
 
+type Connection = {
+  from: string;
+  to: string;
+  weight: number;
+};
+
+const App: React.FC = () => {
   const [nodes, setNodes] = useState<Node[]>([]);
-  const [nodeName, setNodeName] = useState('');
-  const [isShowForm, setIsShowForm] = useState(true);
-  const [isShowFormArista, setIsShowFormArista] = useState(true);
-  const [connections, setConnections] = useState<{ from: string; to: string; weight: number }[]>([]);
-  const [edgeWeight, setEdgeWeight] = useState(1);
-  const [dotString, setDotString] = useState('digraph {}'); // Esto es solo un valor de ejemplo
-
-  // Matriz de adyacencia
-  const [adjacencyMatrix, setAdjacencyMatrix] = useState<number[][]>([]);
-
-  console.log('ADJECTENCY MATRIX =>', adjacencyMatrix)
-
-  // Función para construir la matriz de adyacencia
-  function buildAdjacencyMatrix(nodes: Node[], connections: { from: string; to: string; weight: number }[]) {
-    const matrix = Array(nodes.length)
-      .fill(0)
-      .map(() => Array(nodes.length).fill(Infinity));
-
-    for (const connection of connections) {
-      const fromIndex = nodes.findIndex(node => node.name === connection.from);
-      const toIndex = nodes.findIndex(node => node.name === connection.to);
-      const weight = connection.weight;
-      matrix[fromIndex][toIndex] = weight;
-      matrix[toIndex][fromIndex] = weight; // Para grafos no dirigidos
-    }
-
-    for (let i = 0; i < nodes.length; i++) {
-      matrix[i][i] = 0;
-    }
-
-    return matrix;
-  }
-
-  // Actualizar la matriz de adyacencia cuando cambian los nodos o conexiones
-  useEffect(() => {
-    const newAdjacencyMatrix = buildAdjacencyMatrix(nodes, connections);
-    setAdjacencyMatrix(newAdjacencyMatrix);
-  }, [nodes, connections]);
-
-  // Actualizar la matriz de adyacencia cuando cambia el valor de dotString (debes implementar la lógica para extraer nodos y conexiones)
-  useEffect(() => {
-    // Implementa la lógica para extraer nodos y conexiones de dotString aquí
-    // Luego, construye la matriz de adyacencia
-    const newAdjacencyMatrix = buildAdjacencyMatrix(nodes, connections);
-    setAdjacencyMatrix(newAdjacencyMatrix);
-  }, [dotString]);
+  const [nodeName, setNodeName] = useState<string>('');
+  const [isShowForm, setIsShowForm] = useState<boolean>(true);
+  const [isShowFormArista, setIsShowFormArista] = useState<boolean>(true);
+  const [connections, setConnections] = useState<Connection[]>([]);
+  const [edgeWeight, setEdgeWeight] = useState<number>(1);
+  const [dotString, setDotString] = useState<string>('digraph {}'); // Esto es solo un valor de ejemplo
 
   const handleNodes = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNodeName(e.target.value);
@@ -84,6 +50,15 @@ const App = () => {
       setConnections([...connections, { from: fromNode, to: toNode, weight }]);
     }
   }
+
+  useEffect(() => {
+    // Crear la cadena DOT basada en los nodos y conexiones
+    const dot = `digraph {
+      ${nodes.map(node => `"${node.name}"`).join('; ')}
+      ${connections.map(conn => `"${conn.from}" -> "${conn.to}" [label="${conn.weight}"]`).join('; ')}
+    }`;
+    setDotString(dot);
+  }, [nodes, connections]);
 
   return (
     <div className='flex justify-between'>
@@ -123,8 +98,8 @@ const App = () => {
         )}
       </div>
       <div className='w-[80%]'>
-        <div style={{ width: '600px', height: '400px' }}>
-          <Graphviz dot={dotString} options={{ width: 600, height: 400 }} />
+        <div>
+          <Graphviz dot={dotString} />
         </div>
       </div>
     </div>
