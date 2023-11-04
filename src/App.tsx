@@ -16,7 +16,7 @@ const App = () => {
   const [dotGraph, setDotGraph] = useState<string>('digraph {}');
   const [adjacencyMatrix, setAdjacencyMatrix] = useState<number[][]>([]);
 
-  const { buildAdjacencyMatrix, runPrimAlgorithm } = useAlgorithm(nodes);
+  const { buildAdjacencyMatrix, primAlgorithm, kruskalAlgorithm } = useAlgorithm(nodes);
 
 
   const handleNodes = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,11 +67,17 @@ const App = () => {
 
   const handleRunPrim = () => {
     // Ejecuta el algoritmo de Prim y obtén las aristas seleccionadas
-    const primEdges = runPrimAlgorithm(adjacencyMatrix);
+    const primEdges = primAlgorithm(adjacencyMatrix);
 
     // Actualiza el gráfico con las aristas seleccionadas por el algoritmo de Prim
     const primDotGraph = generateDotGraph(nodes, primEdges);
     setDotGraph(primDotGraph);
+  };
+
+  const handleRunKruskal = () => {
+    const kruskalEdges = kruskalAlgorithm(nodes, connections); // Ejecuta el algoritmo de Kruskal
+    const kruskalDotGraph = generateDotGraph(nodes, kruskalEdges); // Genera el gráfico resultante
+    setDotGraph(kruskalDotGraph); // Actualiza el gráfico
   };
 
   useEffect(() => {
@@ -145,6 +151,9 @@ const App = () => {
         )}
         <button onClick={handleRunPrim} className='bg-blue-400 px-4 py-2 rounded-md'>
           Ejecutar Prim
+        </button>
+        <button onClick={handleRunKruskal} className='bg-blue-400 px-4 py-2 rounded-md'>
+          Ejecutar Kruskal
         </button>
       </div>
       <div className='w-[80%]'>

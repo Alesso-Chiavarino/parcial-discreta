@@ -1,6 +1,56 @@
-import { Connection, Node } from "../types/graph";
+import { Connection, DisjointSet, Node } from "../types/graph";
 
 export const useAlgorithm = (nodes: Node[]) => {
+
+    const makeSet = (n: number): DisjointSet[] => {
+        return Array(n)
+            .fill(0)
+            .map((_, index) => ({ parent: index, rank: 0 }));
+    };
+
+    const find = (sets: DisjointSet[], i: number): number => {
+        if (sets[i].parent !== i) {
+            sets[i].parent = find(sets, sets[i].parent);
+        }
+        return sets[i].parent;
+    };
+
+    const union = (sets: DisjointSet[], x: number, y: number): void => {
+        const rootX = find(sets, x);
+        const rootY = find(sets, y);
+
+        if (rootX !== rootY) {
+            if (sets[rootX].rank < sets[rootY].rank) {
+                sets[rootX].parent = rootY;
+            } else if (sets[rootX].rank > sets[rootY].rank) {
+                sets[rootY].parent = rootX;
+            } else {
+                sets[rootY].parent = rootX;
+                sets[rootX].rank++;
+            }
+        }
+    };
+
+    const kruskalAlgorithm = (nodes: Node[], connections: Connection[]): Connection[] => {
+        connections.sort((a, b) => a.weight - b.weight);
+        const selectedEdges: Connection[] = [];
+        const disjointSets = makeSet(nodes.length);
+
+        for (const connection of connections) {
+            const fromNodeIndex = nodes.findIndex((node) => node.name === connection.from);
+            const toNodeIndex = nodes.findIndex((node) => node.name === connection.to);
+
+            const rootA = find(disjointSets, fromNodeIndex);
+            const rootB = find(disjointSets, toNodeIndex);
+
+            if (rootA !== rootB) {
+                selectedEdges.push(connection);
+                union(disjointSets, rootA, rootB);
+            }
+        }
+
+        return selectedEdges;
+    };
 
     const buildAdjacencyMatrix = (nodes: Node[], connections: Connection[]) => {
         const matrixSize = nodes.length;
@@ -23,7 +73,7 @@ export const useAlgorithm = (nodes: Node[]) => {
         return matrix;
     }
 
-    const runPrimAlgorithm = (adjacencyMatrix: number[][]) => {
+    const primAlgorithm = (adjacencyMatrix: number[][]) => {
         const numNodes = adjacencyMatrix.length;
         const selectedNodes = new Array(numNodes).fill(false);
         const selectedEdges: Connection[] = [];
@@ -62,6 +112,7 @@ export const useAlgorithm = (nodes: Node[]) => {
 
     return {
         buildAdjacencyMatrix,
-        runPrimAlgorithm,
+        primAlgorithm,
+        kruskalAlgorithm,
     }
 }

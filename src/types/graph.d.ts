@@ -7,3 +7,8 @@ export type Connection = {
     to: string;
     weight: number;
 };
+
+export interface DisjointSet {
+    parent: number;
+    rank: number;
+}
