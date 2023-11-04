@@ -110,9 +110,67 @@ export const useAlgorithm = (nodes: Node[]) => {
         return selectedEdges;
     };
 
+    const dijkstraAlgorithm = (adjacencyMatrix: number[][], startNode: Node) => {
+        const numNodes = adjacencyMatrix.length;
+        const distances: number[] = new Array(numNodes).fill(Infinity);
+        const previousNodes: number[] = new Array(numNodes).fill(-1);
+
+        const startNodeIndex = nodes.findIndex((node) => node.name === startNode.name);
+        distances[startNodeIndex] = 0;
+
+        const unvisitedNodes: number[] = Array.from({ length: numNodes }, (_, i) => i);
+
+        while (unvisitedNodes.length > 0) {
+            const currentNodeIndex = getClosestNode(unvisitedNodes, distances);
+            unvisitedNodes.splice(unvisitedNodes.indexOf(currentNodeIndex), 1);
+
+            for (let neighborIndex = 0; neighborIndex < numNodes; neighborIndex++) {
+                if (adjacencyMatrix[currentNodeIndex][neighborIndex] !== Infinity) {
+                    const tentativeDistance = distances[currentNodeIndex] + adjacencyMatrix[currentNodeIndex][neighborIndex];
+
+                    if (tentativeDistance < distances[neighborIndex]) {
+                        distances[neighborIndex] = tentativeDistance;
+                        previousNodes[neighborIndex] = currentNodeIndex;
+                    }
+                }
+            }
+        }
+
+        const dijkstraEdges: Connection[] = [];
+        for (let i = 0; i < numNodes; i++) {
+            if (i !== startNodeIndex) {
+                const targetNode = nodes[i];
+                const path = reconstructPath(previousNodes, i, startNodeIndex);
+                dijkstraEdges.push({
+                    from: startNode.name,
+                    to: targetNode.name,
+                    weight: distances[i],
+                    path,
+                });
+            }
+        }
+
+        return dijkstraEdges;
+    };
+
+    const getClosestNode = (nodes: number[], distances: number[]) => {
+        return nodes.reduce((closest, node) => (distances[node] < distances[closest] ? node : closest), nodes[0]);
+    };
+
+    const reconstructPath = (previousNodes: number[], targetNode: number, startNode: number) => {
+        const path = [targetNode];
+        let currentNode = targetNode;
+        while (currentNode !== startNode) {
+            currentNode = previousNodes[currentNode];
+            path.unshift(currentNode);
+        }
+        return path;
+    };
+
     return {
         buildAdjacencyMatrix,
         primAlgorithm,
         kruskalAlgorithm,
+        dijkstraAlgorithm
     }
 }

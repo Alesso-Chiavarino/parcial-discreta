@@ -15,8 +15,9 @@ const App = () => {
   const [addBothDirections, setAddBothDirections] = useState<boolean>(false);
   const [dotGraph, setDotGraph] = useState<string>('digraph {}');
   const [adjacencyMatrix, setAdjacencyMatrix] = useState<number[][]>([]);
+  const [startDijkstraNode, setStartDijkstraNode] = useState<string>();
 
-  const { buildAdjacencyMatrix, primAlgorithm, kruskalAlgorithm } = useAlgorithm(nodes);
+  const { buildAdjacencyMatrix, primAlgorithm, kruskalAlgorithm, dijkstraAlgorithm } = useAlgorithm(nodes);
 
 
   const handleNodes = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,6 +81,25 @@ const App = () => {
     setDotGraph(kruskalDotGraph); // Actualiza el gráfico
   };
 
+  const handleRunDijkstra = (initialNode?: string) => {
+    // Ejecuta el algoritmo de Dijkstra desde un nodo específico
+
+    const startNode = initialNode ? nodes.find((node) => node.name === initialNode) : nodes[0];
+
+    if (!startNode) {
+      console.log(`El nodo inicial ${initialNode} no se encontró en la lista de nodos.`);
+      return;
+    }
+
+    // Ejecuta el algoritmo de Dijkstra con el nodo de inicio encontrado
+    const dijkstraEdges = dijkstraAlgorithm(adjacencyMatrix, startNode);
+
+    // Actualiza el gráfico con las aristas resultantes del algoritmo de Dijkstra
+    const dijkstraDotGraph = generateDotGraph(nodes, dijkstraEdges);
+    setDotGraph(dijkstraDotGraph);
+  };
+
+
   useEffect(() => {
     const newAdjacencyMatrix = buildAdjacencyMatrix(nodes, connections);
     setAdjacencyMatrix(newAdjacencyMatrix);
@@ -97,6 +117,10 @@ const App = () => {
     ).join(' ');
     return `digraph { ${nodeStatements} ${edgeStatements} }`;
   };
+
+  const handleStartDijkstraNode = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setStartDijkstraNode(e.target.value);
+  }
 
   return (
     <div className='flex justify-between'>
@@ -155,6 +179,13 @@ const App = () => {
         <button onClick={handleRunKruskal} className='bg-blue-400 px-4 py-2 rounded-md'>
           Ejecutar Kruskal
         </button>
+        <div>
+          <input type="text" onChange={handleStartDijkstraNode} />
+          <button onClick={() => handleRunDijkstra(startDijkstraNode)} className='bg-yellow-400 px-4 py-2 rounded-md'>
+            Ejecutar Dijkstra
+          </button>
+        </div>
+
       </div>
       <div className='w-[80%]'>
         <div>

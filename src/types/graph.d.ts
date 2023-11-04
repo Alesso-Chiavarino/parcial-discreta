@@ -6,6 +6,7 @@ export type Connection = {
     from: string;
     to: string;
     weight: number;
+    path?: number[];
 };
 
 export interface DisjointSet {
