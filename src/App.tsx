@@ -16,6 +16,11 @@ const App = () => {
   const [dotGraph, setDotGraph] = useState<string>('digraph {}');
   const [adjacencyMatrix, setAdjacencyMatrix] = useState<number[][]>([]);
   const [startDijkstraNode, setStartDijkstraNode] = useState<string>();
+  const [initialGraph, setInitialGraph] = useState<{ nodes: Node[]; connections: Connection[] }>({
+    nodes: [],
+    connections: [],
+  });
+
 
   const { buildAdjacencyMatrix, primAlgorithm, kruskalAlgorithm, dijkstraAlgorithm } = useAlgorithm(nodes);
 
@@ -39,13 +44,14 @@ const App = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setNodes([...nodes, { name: nodeName }]);
+    const newNode = { name: nodeName };
+    setNodes([...nodes, newNode]);
     setNodeName('');
+    setInitialGraph((prev) => ({ nodes: [...prev.nodes, newNode], connections: prev.connections }));
   };
 
   const handleConnectNodes = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const fromNode = e.currentTarget.fromNode.value;
     const toNode = e.currentTarget.toNode.value;
     const weight = parseFloat(e.currentTarget.weight.value);
@@ -64,7 +70,9 @@ const App = () => {
     }
 
     setConnections(updatedConnections);
+    setInitialGraph((prev) => ({ nodes: prev.nodes, connections: updatedConnections }));
   };
+
 
   const handleRunPrim = () => {
     // Ejecuta el algoritmo de Prim y obtén las aristas seleccionadas
@@ -123,6 +131,12 @@ const App = () => {
       }
     `;
   };
+
+  const handleResetGraph = () => {
+    setNodes([...initialGraph.nodes]);
+    setConnections([...initialGraph.connections]);
+  };
+  
 
 
   const handleStartDijkstraNode = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -192,6 +206,10 @@ const App = () => {
             Ejecutar Dijkstra
           </button>
         </div>
+        <button onClick={handleResetGraph} className='bg-yellow-400 px-4 py-2 rounded-md'>
+          Restaurar Grafo Inicial
+        </button>
+
 
       </div>
       <div className='w-[80%]'>
