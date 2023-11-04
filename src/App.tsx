@@ -115,8 +115,15 @@ const App = () => {
     const edgeStatements = connections.map(
       (connection) => `${connection.from} -> ${connection.to} [label="${connection.weight}"];`
     ).join(' ');
-    return `digraph { ${nodeStatements} ${edgeStatements} }`;
+
+    return `
+      digraph {
+        ${nodeStatements}
+        ${edgeStatements}
+      }
+    `;
   };
+
 
   const handleStartDijkstraNode = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStartDijkstraNode(e.target.value);
@@ -189,7 +196,13 @@ const App = () => {
       </div>
       <div className='w-[80%]'>
         <div>
-          <Graphviz dot={dotGraph} options={{ width: 600, height: 400 }} />
+          {nodes.length > 0 ? (
+            <Graphviz dot={dotGraph} options={{ width: 600, height: 400 }} />
+          ) : (
+            <div>
+              <h1>No hay nodos</h1>
+            </div>
+          )}
         </div>
       </div>
     </div>
