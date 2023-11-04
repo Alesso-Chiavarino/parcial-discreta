@@ -1,18 +1,59 @@
 import './App.css';
 import { Graphviz } from 'graphviz-react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const App = () => {
-
   interface Node {
-    name: string
+    name: string;
   }
 
   const [nodes, setNodes] = useState<Node[]>([]);
   const [nodeName, setNodeName] = useState('');
   const [isShowForm, setIsShowForm] = useState(true);
   const [isShowFormArista, setIsShowFormArista] = useState(true);
-  const [connections, setConnections] = useState<{ from: string, to: string }[]>([]);
+  const [connections, setConnections] = useState<{ from: string; to: string; weight: number }[]>([]);
+  const [edgeWeight, setEdgeWeight] = useState(1);
+  const [dotString, setDotString] = useState('digraph {}'); // Esto es solo un valor de ejemplo
+
+  // Matriz de adyacencia
+  const [adjacencyMatrix, setAdjacencyMatrix] = useState<number[][]>([]);
+
+  console.log('ADJECTENCY MATRIX =>', adjacencyMatrix)
+
+  // Función para construir la matriz de adyacencia
+  function buildAdjacencyMatrix(nodes: Node[], connections: { from: string; to: string; weight: number }[]) {
+    const matrix = Array(nodes.length)
+      .fill(0)
+      .map(() => Array(nodes.length).fill(Infinity));
+
+    for (const connection of connections) {
+      const fromIndex = nodes.findIndex(node => node.name === connection.from);
+      const toIndex = nodes.findIndex(node => node.name === connection.to);
+      const weight = connection.weight;
+      matrix[fromIndex][toIndex] = weight;
+      matrix[toIndex][fromIndex] = weight; // Para grafos no dirigidos
+    }
+
+    for (let i = 0; i < nodes.length; i++) {
+      matrix[i][i] = 0;
+    }
+
+    return matrix;
+  }
+
+  // Actualizar la matriz de adyacencia cuando cambian los nodos o conexiones
+  useEffect(() => {
+    const newAdjacencyMatrix = buildAdjacencyMatrix(nodes, connections);
+    setAdjacencyMatrix(newAdjacencyMatrix);
+  }, [nodes, connections]);
+
+  // Actualizar la matriz de adyacencia cuando cambia el valor de dotString (debes implementar la lógica para extraer nodos y conexiones)
+  useEffect(() => {
+    // Implementa la lógica para extraer nodos y conexiones de dotString aquí
+    // Luego, construye la matriz de adyacencia
+    const newAdjacencyMatrix = buildAdjacencyMatrix(nodes, connections);
+    setAdjacencyMatrix(newAdjacencyMatrix);
+  }, [dotString]);
 
   const handleNodes = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNodeName(e.target.value);
@@ -37,20 +78,12 @@ const App = () => {
 
     const fromNode = e.currentTarget.fromNode.value;
     const toNode = e.currentTarget.toNode.value;
+    const weight = parseFloat(e.currentTarget.weight.value);
 
     if (!connections.some(conn => conn.from === fromNode && conn.to === toNode)) {
-      setConnections([...connections, { from: fromNode, to: toNode }]);
+      setConnections([...connections, { from: fromNode, to: toNode, weight }]);
     }
   }
-
-  let dotString = 'digraph {';
-  for (let i = 0; i < nodes.length; i++) {
-    dotString += `${nodes[i].name};`;
-  }
-  for (const connection of connections) {
-    dotString += `${connection.from} -> ${connection.to};`;
-  }
-  dotString += '}';
 
   return (
     <div className='flex justify-between'>
@@ -82,13 +115,15 @@ const App = () => {
                   <option key={index} value={node.name}>{node.name}</option>
                 ))}
               </select>
+              <label htmlFor="weight">Peso de la arista</label>
+              <input type="number" name="weight" id="weight" value={edgeWeight} onChange={(e) => setEdgeWeight(parseFloat(e.target.value))} />
             </div>
             <button type="submit" className='bg-red-400 px-4 py-2 rounded-md'>Conectar</button>
           </form>
         )}
       </div>
       <div className='w-[80%]'>
-        <div style={{ width: '600px', height: '400px' }}> {/* Set your desired width and height */}
+        <div style={{ width: '600px', height: '400px' }}>
           <Graphviz dot={dotString} options={{ width: 600, height: 400 }} />
         </div>
       </div>
