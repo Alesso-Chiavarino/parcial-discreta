@@ -1,17 +1,10 @@
 import './App.css';
 import { Graphviz } from 'graphviz-react';
 import React, { useState, useEffect } from 'react';
+import { Connection, Node } from './types/graph';
+import { useAlgorithm } from './hooks/useAlgorithm';
 
-const App: React.FC = () => {
-  type Node = {
-    name: string;
-  };
-
-  type Connection = {
-    from: string;
-    to: string;
-    weight: number;
-  };
+const App = () => {
 
   const [nodes, setNodes] = useState<Node[]>([]);
   const [nodeName, setNodeName] = useState<string>('');
@@ -19,71 +12,12 @@ const App: React.FC = () => {
   const [isShowFormArista, setIsShowFormArista] = useState<boolean>(true);
   const [connections, setConnections] = useState<Connection[]>([]);
   const [edgeWeight, setEdgeWeight] = useState<number>(1);
-  const [addBothDirections, setAddBothDirections] = useState<boolean>(false); // Opción "Ambas Direcciones"
-  // const [dotString, setDotString] = useState<string>(''); // Inicialmente vacío
-  const [dotGraph, setDotGraph] = useState<string>('digraph {}'); // Inicialmente un gráfico vacío
+  const [addBothDirections, setAddBothDirections] = useState<boolean>(false);
+  const [dotGraph, setDotGraph] = useState<string>('digraph {}');
   const [adjacencyMatrix, setAdjacencyMatrix] = useState<number[][]>([]);
-  // const [runPrim, setRunPrim] = useState<boolean>(false);
 
-  // Función para construir la matriz de adyacencia
-  function buildAdjacencyMatrix(nodes: Node[], connections: Connection[]) {
-    const matrixSize = nodes.length;
-    const matrix = Array(matrixSize)
-      .fill(0)
-      .map(() => Array(matrixSize).fill(Infinity));
+  const { buildAdjacencyMatrix, primAlgorithm, kruskalAlgorithm } = useAlgorithm(nodes);
 
-    for (const connection of connections) {
-      const fromIndex = nodes.findIndex((node) => node.name === connection.from);
-      const toIndex = nodes.findIndex((node) => node.name === connection.to);
-      const weight = connection.weight;
-      matrix[fromIndex][toIndex] = weight;
-      matrix[toIndex][fromIndex] = weight; // Para grafos no dirigidos
-    }
-
-    for (let i = 0; i < matrixSize; i++) {
-      matrix[i][i] = 0;
-    }
-
-    return matrix;
-  }
-
-  // Función para ejecutar el algoritmo de Prim y obtener las aristas seleccionadas
-  const runPrimAlgorithm = (adjacencyMatrix: number[][]) => {
-    const numNodes = adjacencyMatrix.length;
-    const selectedNodes = new Array(numNodes).fill(false);
-    const selectedEdges: Connection[] = [];
-
-    selectedNodes[0] = true;
-
-    while (selectedEdges.length < numNodes - 1) {
-      let minWeight = Infinity;
-      let fromNode = -1;
-      let toNode = -1;
-
-      for (let i = 0; i < numNodes; i++) {
-        if (selectedNodes[i]) {
-          for (let j = 0; j < numNodes; j++) {
-            if (!selectedNodes[j] && adjacencyMatrix[i][j] < minWeight) {
-              minWeight = adjacencyMatrix[i][j];
-              fromNode = i;
-              toNode = j;
-            }
-          }
-        }
-      }
-
-      if (fromNode !== -1 && toNode !== -1) {
-        selectedEdges.push({
-          from: nodes[fromNode].name,
-          to: nodes[toNode].name,
-          weight: adjacencyMatrix[fromNode][toNode],
-        });
-        selectedNodes[toNode] = true;
-      }
-    }
-
-    return selectedEdges;
-  };
 
   const handleNodes = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNodeName(e.target.value);
@@ -131,18 +65,19 @@ const App: React.FC = () => {
     setConnections(updatedConnections);
   };
 
-
-
-
-
-
   const handleRunPrim = () => {
     // Ejecuta el algoritmo de Prim y obtén las aristas seleccionadas
-    const primEdges = runPrimAlgorithm(adjacencyMatrix);
+    const primEdges = primAlgorithm(adjacencyMatrix);
 
     // Actualiza el gráfico con las aristas seleccionadas por el algoritmo de Prim
     const primDotGraph = generateDotGraph(nodes, primEdges);
     setDotGraph(primDotGraph);
+  };
+
+  const handleRunKruskal = () => {
+    const kruskalEdges = kruskalAlgorithm(nodes, connections); // Ejecuta el algoritmo de Kruskal
+    const kruskalDotGraph = generateDotGraph(nodes, kruskalEdges); // Genera el gráfico resultante
+    setDotGraph(kruskalDotGraph); // Actualiza el gráfico
   };
 
   useEffect(() => {
@@ -216,6 +151,9 @@ const App: React.FC = () => {
         )}
         <button onClick={handleRunPrim} className='bg-blue-400 px-4 py-2 rounded-md'>
           Ejecutar Prim
+        </button>
+        <button onClick={handleRunKruskal} className='bg-blue-400 px-4 py-2 rounded-md'>
+          Ejecutar Kruskal
         </button>
       </div>
       <div className='w-[80%]'>
