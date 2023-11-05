@@ -194,7 +194,7 @@ const App = () => {
                       <div className='w-[50%] flex flex-col gap-2 items-center'>
                         <label className='self-start' htmlFor='fromNode'>Desde</label>
                         <select
-                          className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-full'
+                          className=' bg-[#131313] border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-full'
                           name='fromNode'>
                           {nodes.length > 0 &&
                             nodes.map((node, index) => (
@@ -207,7 +207,7 @@ const App = () => {
                       <div className='w-[50%] flex flex-col gap-2 items-center'>
                         <label className='self-start' htmlFor='toNode'>Hasta</label>
                         <select
-                          className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-full'
+                          className=' bg-[#131313] border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-full'
                           name='toNode'>
                           {nodes.length > 0 &&
                             nodes.map((node, index) => (
@@ -235,7 +235,7 @@ const App = () => {
                           type="checkbox"
                           checked={addBothDirections}
                           onChange={() => setAddBothDirections(!addBothDirections)}
-                          className='border-2 border-gray-400 bg-transparent'
+                        // className='border-[1px] border-gray-400 w-4 h-4 bg-transparent rounded-md bg-red'
                         />
                       </div>
                     </div>
@@ -264,7 +264,7 @@ const App = () => {
                   <div className='flex flex-col gap-1 items-start'>
                     <label className='font-semibold' htmlFor="">Prim</label>
                     <div className='flex flex-col gap-2 mx-2'>
-                      <button onClick={handleRunPrim} className='bg-violet-400 px-4 py-2 rounded-md'>
+                      <button onClick={handleRunPrim} className='bg-violet-400 font-bold hover:bg-violet-500 transition-all px-4 py-2 rounded-md'>
                         Ejecutar Prim
                       </button>
                     </div>
@@ -274,7 +274,7 @@ const App = () => {
                   <div className='flex flex-col gap-1 items-start'>
                     <label className='font-semibold' htmlFor="">Kruskal</label>
                     <div className='flex flex-col gap-2 mx-2'>
-                      <button onClick={handleRunKruskal} className='bg-violet-400 px-4 py-2 rounded-md'>
+                      <button onClick={handleRunKruskal} className='bg-violet-400 font-bold hover:bg-violet-500 transition-all px-4 py-2 rounded-md'>
                         Ejecutar Kruskal
                       </button>
                     </div>
@@ -285,8 +285,12 @@ const App = () => {
                     <label className='font-semibold' htmlFor="">Dijkstra</label>
                     <div className='flex flex-col gap-2 mx-2'>
                       <label className='self-start' htmlFor='fromNode'>Nodo Inicio</label>
-                      <input type="text" className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-fit' onChange={handleStartDijkstraNode} />
-                      <button onClick={() => handleRunDijkstra(startDijkstraNode)} className='bg-violet-400 px-4 py-2 rounded-md'>
+                      <input
+                        type="text"
+                        placeholder='A, B, C, ...'
+                        className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-fit'
+                        onChange={handleStartDijkstraNode} />
+                      <button onClick={() => handleRunDijkstra(startDijkstraNode)} className='bg-violet-400 hover:bg-violet-500 transition-all px-4 font-bold py-2 rounded-md'>
                         Ejecutar Dijkstra
                       </button>
                     </div>
@@ -296,7 +300,7 @@ const App = () => {
                   <div className='flex flex-col gap-1 items-start'>
                     <label className='font-semibold' htmlFor="">Restaurar Grafo</label>
                     <div className='flex flex-col gap-2 mx-2'>
-                      <button onClick={handleRollBackGraph} className='bg-violet-400 px-4 py-2 rounded-md'>
+                      <button onClick={handleRollBackGraph} className='bg-violet-400 font-bold hover:bg-violet-500 transition-all px-4 py-2 rounded-md'>
                         Volver al Grafo Inicial
                       </button>
                     </div>
@@ -306,7 +310,7 @@ const App = () => {
                   <div className='flex flex-col gap-1 items-start'>
                     <label className='font-semibold' htmlFor="">Limpiar Grafo</label>
                     <div className='flex flex-col gap-2 mx-2'>
-                      <button onClick={handleResetGraph} className='bg-violet-400 px-4 py-2 rounded-md'>
+                      <button onClick={handleResetGraph} className='bg-violet-400 font-bold hover:bg-violet-500 transition-all px-4 py-2 rounded-md'>
                         Limpiar Grafo
                       </button>
                     </div>
