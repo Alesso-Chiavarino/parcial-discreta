@@ -1,7 +1,7 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  /* max-width: 1280px; */
+  /* margin: 0 auto; */
+  /* padding: 2rem; */
   text-align: center;
 }
 
@@ -14,26 +14,26 @@
 /* #graphviz1 {
   fill: red;
 } */
-svg {
+#graphviz1 svg {
   width: 1000px;
   height: 80vh;
 }
 
 /* Selecciona todos los elementos de relleno (polígonos) generados por Graphviz y establece el color de relleno */
-polygon {
+#graphviz1 polygon {
   fill: #131313;
   /* Cambia el color de relleno a rojo (#ff0000) */
 }
 
-ellipse {
+#graphviz1 ellipse {
   stroke: #fff;
 }
 
-text {
+#graphviz1 text {
   fill: #fff;
 }
 
-.edge polygon {
+#graphviz1 .edge polygon {
   fill: none;
   stroke: #fff;
 
@@ -45,6 +45,28 @@ path {
 
 }
 
+/* scroll styles, black scroll */
+
+* {
+  scrollbar-width: none;
+  scrollbar-color: #000000 #b10606;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #000;
+}
+
+*::-webkit-scrollbar-thumb {
+  /* background-color: #000000; */
+  background-color: #fff;
+  border-radius: 10px;
+  /* border: 3px solid #ffffff; */
+}
 
 /* } */
 
