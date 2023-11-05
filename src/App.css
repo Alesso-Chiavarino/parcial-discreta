@@ -14,26 +14,27 @@
 /* #graphviz1 {
   fill: red;
 } */
-#graphviz1 svg {
+
+.graph-container svg {
   width: 1000px;
   height: 80vh;
 }
 
 /* Selecciona todos los elementos de relleno (polígonos) generados por Graphviz y establece el color de relleno */
-#graphviz1 polygon {
+.graph-container polygon {
   fill: #131313;
   /* Cambia el color de relleno a rojo (#ff0000) */
 }
 
-#graphviz1 ellipse {
+.graph-container ellipse {
   stroke: #fff;
 }
 
-#graphviz1 text {
+.graph-container text {
   fill: #fff;
 }
 
-#graphviz1 .edge polygon {
+.graph-container .edge polygon {
   fill: none;
   stroke: #fff;
 

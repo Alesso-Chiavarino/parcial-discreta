@@ -322,7 +322,9 @@ const App = () => {
       <div className='w-[70%]'>
         <div>
           {nodes.length > 0 ? (
-            <Graphviz dot={dotGraph} options={{ width: 600, height: 400 }} />
+            <div className='graph-container'>
+              <Graphviz dot={dotGraph} options={{ width: 600, height: 400 }} />
+            </div>
           ) : (
             <div className='flex flex-col gap-10 items-center py-20'>
               <span className='text-xl'>No hay ningun un grafo cargado!</span>
