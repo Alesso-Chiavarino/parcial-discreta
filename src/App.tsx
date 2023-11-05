@@ -328,7 +328,7 @@ const App = () => {
               <span className='text-xl'>No hay ningun un grafo cargado!</span>
               <span>Prueba agregandolo en el menú herramientas.</span>
               <div className='w-[400px]'>
-                <img src="./src/assets/empty.svg" alt="" />
+                <img src="https://res.cloudinary.com/dotaebdx8/image/upload/v1699224953/empty_tovhdf.svg" alt="" />
               </div>
             </div>
           )}
