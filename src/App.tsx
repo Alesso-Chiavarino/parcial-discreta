@@ -322,13 +322,15 @@ const App = () => {
       <div className='w-[70%]'>
         <div>
           {nodes.length > 0 ? (
-            <Graphviz dot={dotGraph} options={{ width: 600, height: 400 }} />
+            <div className='graph-container'>
+              <Graphviz dot={dotGraph} options={{ width: 600, height: 400 }} />
+            </div>
           ) : (
             <div className='flex flex-col gap-10 items-center py-20'>
               <span className='text-xl'>No hay ningun un grafo cargado!</span>
               <span>Prueba agregandolo en el menú herramientas.</span>
               <div className='w-[400px]'>
-                <img src="./src/assets/empty.svg" alt="" />
+                <img src="https://res.cloudinary.com/dotaebdx8/image/upload/v1699224953/empty_tovhdf.svg" alt="" />
               </div>
             </div>
           )}
