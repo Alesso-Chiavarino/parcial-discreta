@@ -1,14 +1,74 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  /* max-width: 1280px; */
+  /* margin: 0 auto; */
+  /* padding: 2rem; */
   text-align: center;
 }
 
-.hola svg {
+/* .hola svg {
   height: 100%;
   width: 100%;
+} */
+
+/* svg { */
+/* #graphviz1 {
+  fill: red;
+} */
+#graphviz1 svg {
+  width: 1000px;
+  height: 80vh;
 }
+
+/* Selecciona todos los elementos de relleno (polígonos) generados por Graphviz y establece el color de relleno */
+#graphviz1 polygon {
+  fill: #131313;
+  /* Cambia el color de relleno a rojo (#ff0000) */
+}
+
+#graphviz1 ellipse {
+  stroke: #fff;
+}
+
+#graphviz1 text {
+  fill: #fff;
+}
+
+#graphviz1 .edge polygon {
+  fill: none;
+  stroke: #fff;
+
+}
+
+
+path {
+  stroke: #fff;
+
+}
+
+/* scroll styles, black scroll */
+
+* {
+  scrollbar-width: none;
+  scrollbar-color: #000000 #b10606;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #000;
+}
+
+*::-webkit-scrollbar-thumb {
+  /* background-color: #000000; */
+  background-color: #fff;
+  border-radius: 10px;
+  /* border: 3px solid #ffffff; */
+}
+
+/* } */
 
 * {
   padding: 0;
@@ -17,45 +77,6 @@
 }
 
 body {
-  background-color: #0f0f0f;
+  background-color: #131313;
   color: #fff;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
