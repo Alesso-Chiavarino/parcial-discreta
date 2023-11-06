@@ -1,29 +1,14 @@
 #root {
-  /* max-width: 1280px; */
-  /* margin: 0 auto; */
-  /* padding: 2rem; */
   text-align: center;
 }
-
-/* .hola svg {
-  height: 100%;
-  width: 100%;
-} */
-
-/* svg { */
-/* #graphviz1 {
-  fill: red;
-} */
 
 .graph-container svg {
   width: 1000px;
   height: 80vh;
 }
 
-/* Selecciona todos los elementos de relleno (polígonos) generados por Graphviz y establece el color de relleno */
 .graph-container polygon {
   fill: #131313;
-  /* Cambia el color de relleno a rojo (#ff0000) */
 }
 
 select {
@@ -44,7 +29,6 @@ input[type="checkbox"] {
   margin-right: 5px;
 }
 
-/* Estilo para el casillero cuando está marcado (cambia el fondo de color) */
 input[type="checkbox"]:checked {
   background-color: #8B5CF6;
 }
@@ -81,7 +65,7 @@ input[type="checkbox"]:checked {
 }
 
 *::-webkit-scrollbar-track {
-  background: #000;
+  background: #0f0f0f;
 }
 
 *::-webkit-scrollbar-thumb {
