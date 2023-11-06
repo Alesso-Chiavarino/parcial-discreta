@@ -6,6 +6,7 @@ import { useAlgorithm } from './hooks/useAlgorithm';
 import { MagicMotion } from "react-magic-motion";
 import { ChevronDown, ChevronUp } from './icons/Icons';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 const App = () => {
 
@@ -321,13 +322,13 @@ const App = () => {
 
           </aside >
         </MagicMotion>
-        <main className='w-[70%]'>
+        <main className='w-[70%] min-h-screen'>
 
           <header>
             <Navbar />
           </header>
 
-          <div >
+          <div className='min-h-[90vh]'>
             <div>
               {nodes.length > 0 ? (
                 <div className='graph-container'>
@@ -344,11 +345,11 @@ const App = () => {
               )}
             </div>
           </div>
+
+          <Footer />
+
         </main>
       </div>
-      <footer>
-
-      </footer>
     </>
 
 
