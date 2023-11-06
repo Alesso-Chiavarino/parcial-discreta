@@ -7,6 +7,7 @@ import { MagicMotion } from "react-magic-motion";
 import { ChevronDown, ChevronUp } from './icons/Icons';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import { graphModels } from './models/graph.models';
 
 const App = () => {
 
@@ -22,6 +23,8 @@ const App = () => {
   const [adjacencyMatrix, setAdjacencyMatrix] = useState<number[][]>([]);
   const [startDijkstraNode, setStartDijkstraNode] = useState<string>();
   const [initialGraph, setInitialGraph] = useState<{ nodes: Node[]; connections: Connection[] }>({ nodes: [], connections: [] });
+  const [selectedModel, setSelectedModel] = useState('');
+
 
 
   const { buildAdjacencyMatrix, primAlgorithm, kruskalAlgorithm, dijkstraAlgorithm } = useAlgorithm(nodes);
@@ -151,6 +154,21 @@ const App = () => {
     setDotGraph('digraph {}');
   };
 
+
+
+  const handleModelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selected = e.target.value;
+    setSelectedModel(selected);
+
+    if (selected && graphModels[selected]) {
+      const { nodes, connections } = graphModels[selected];
+      setNodes(nodes);
+      setConnections(connections);
+    }
+  };
+
+
+
   return (
     <>
       <div className='flex h-screen'>
@@ -197,7 +215,7 @@ const App = () => {
                         <div className='w-[50%] flex flex-col gap-2 items-center'>
                           <label className='self-start' htmlFor='fromNode'>Desde</label>
                           <select
-                            className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-full'
+                            className=' bg-[#131313] border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-full'
                             name='fromNode'>
                             {nodes.length > 0 &&
                               nodes.map((node, index) => (
@@ -210,7 +228,7 @@ const App = () => {
                         <div className='w-[50%] flex flex-col gap-2 items-center'>
                           <label className='self-start' htmlFor='toNode'>Hasta</label>
                           <select
-                            className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-full'
+                            className=' bg-[#131313] border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-full'
                             name='toNode'>
                             {nodes.length > 0 &&
                               nodes.map((node, index) => (
@@ -267,7 +285,7 @@ const App = () => {
                     <div className='flex flex-col gap-1 items-start'>
                       <label className='font-semibold' htmlFor="">Prim</label>
                       <div className='flex flex-col gap-2 mx-2'>
-                        <button onClick={handleRunPrim} className='bg-violet-400 px-4 py-2 rounded-md'>
+                        <button onClick={handleRunPrim} className='bg-violet-400 hover_bg- px-4 py-2 rounded-md'>
                           Ejecutar Prim
                         </button>
                       </div>
@@ -277,7 +295,7 @@ const App = () => {
                     <div className='flex flex-col gap-1 items-start'>
                       <label className='font-semibold' htmlFor="">Kruskal</label>
                       <div className='flex flex-col gap-2 mx-2'>
-                        <button onClick={handleRunKruskal} className='bg-violet-400 px-4 py-2 rounded-md'>
+                        <button onClick={handleRunKruskal} className='bg-violet-400 hover_bg- px-4 py-2 rounded-md'>
                           Ejecutar Kruskal
                         </button>
                       </div>
@@ -289,7 +307,7 @@ const App = () => {
                       <div className='flex flex-col gap-2 mx-2'>
                         <label className='self-start' htmlFor='fromNode'>Nodo Inicio</label>
                         <input type="text" className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-fit' onChange={handleStartDijkstraNode} />
-                        <button onClick={() => handleRunDijkstra(startDijkstraNode)} className='bg-violet-400 px-4 py-2 rounded-md'>
+                        <button onClick={() => handleRunDijkstra(startDijkstraNode)} className='bg-violet-400 hover_bg- px-4 py-2 rounded-md'>
                           Ejecutar Dijkstra
                         </button>
                       </div>
@@ -299,7 +317,7 @@ const App = () => {
                     <div className='flex flex-col gap-1 items-start'>
                       <label className='font-semibold' htmlFor="">Restaurar Grafo</label>
                       <div className='flex flex-col gap-2 mx-2'>
-                        <button onClick={handleRollBackGraph} className='bg-violet-400 px-4 py-2 rounded-md'>
+                        <button onClick={handleRollBackGraph} className='bg-violet-400 hover_bg- px-4 py-2 rounded-md'>
                           Volver al Grafo Inicial
                         </button>
                       </div>
@@ -309,9 +327,28 @@ const App = () => {
                     <div className='flex flex-col gap-1 items-start'>
                       <label className='font-semibold' htmlFor="">Limpiar Grafo</label>
                       <div className='flex flex-col gap-2 mx-2'>
-                        <button onClick={handleResetGraph} className='bg-violet-400 px-4 py-2 rounded-md'>
+                        <button onClick={handleResetGraph} className='bg-violet-400 hover_bg- px-4 py-2 rounded-md'>
                           Limpiar Grafo
                         </button>
+                      </div>
+                      <hr className='w-[70%] mt-2' />
+                    </div>
+
+                    <div className='flex flex-col gap-1 items-start'>
+                      <label className='font-semibold' htmlFor="selectModel">Seleccionar Modelo de Grafo</label>
+                      <div className='mx-2'>
+                        <select
+                          id="selectModel"
+                          value={selectedModel}
+                          onChange={handleModelChange}
+                          className='bg-[#131313] border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-fit'>
+                          <option value="">Seleccionar un modelo</option>
+                          {Object.keys(graphModels).map((model) => (
+                            <option key={model} value={model}>
+                              {model}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                       <hr className='w-[70%] mt-2' />
                     </div>
