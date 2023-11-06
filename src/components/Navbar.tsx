@@ -1,5 +1,3 @@
-import React from 'react'
-
 const Navbar = () => {
     return (
         <nav className='px-5 border-b-2 pt-2 pb-3'>
