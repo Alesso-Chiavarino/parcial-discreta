@@ -41,9 +41,8 @@
 }
 
 
-path {
+.graph-container path {
   stroke: #fff;
-
 }
 
 /* scroll styles, black scroll */

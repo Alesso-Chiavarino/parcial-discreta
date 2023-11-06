@@ -5,6 +5,7 @@ import { Connection, Node } from './types/graph';
 import { useAlgorithm } from './hooks/useAlgorithm';
 import { MagicMotion } from "react-magic-motion";
 import { ChevronDown, ChevronUp } from './icons/Icons';
+import Navbar from './components/Navbar';
 
 const App = () => {
 
@@ -150,193 +151,206 @@ const App = () => {
   };
 
   return (
-    <div className='flex h-screen'>
-      <MagicMotion>
-        <aside className='w-[30%] rounded-md p-5 flex flex-col gap-10 overflow-y-scroll px-10'>
-          <h1 className='font-extrabold text-2xl self-start py-4'>Herramientas</h1>
-          <div className='flex flex-col gap-20'>
-            <div className='flex flex-col gap-5'>
-              <div onClick={handleShowForm} className='flex text-xl items-center gap-2 cursor-pointer'>
-                <button className=''>
-                  Añadir Nodo
-                </button>
-                {isShowForm ? <ChevronDown /> : <ChevronUp />}
-              </div>
-
-              {isShowForm && (
-                <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
-                  <div className='flex flex-col gap-2'>
-                    <label className='self-start' htmlFor='numNodes'>Nombre del nodo</label>
-                    <input
-                      onChange={handleNodes}
-                      value={nodeName}
-                      placeholder='A, B, C, ...'
-                      className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2'
-                      name='numNodes'
-                      id='numNodes' />
-                  </div>
-                  <button className='bg-gray-200 transition-all hover:bg-gray-300 text-black px-8 py-2 rounded-md w-fit font-bold'>Añadir</button>
-                </form>
-              )}
-              <hr />
-            </div>
-            <div className='flex flex-col gap-5'>
-              <div onClick={handleShowFormArista} className='flex items-center gap-2 text-xl cursor-pointer'>
-                <button className=''>
-                  Añadir Arista
-                </button>
-                {isShowFormArista ? <ChevronDown /> : <ChevronUp />}
-              </div>
-              {isShowFormArista && (
-                <form className='flex flex-col gap-5' onSubmit={handleConnectNodes}>
-                  <div className='flex flex-col gap-2'>
-                    <div className='flex gap-5'>
-                      <div className='w-[50%] flex flex-col gap-2 items-center'>
-                        <label className='self-start' htmlFor='fromNode'>Desde</label>
-                        <select
-                          className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-full'
-                          name='fromNode'>
-                          {nodes.length > 0 &&
-                            nodes.map((node, index) => (
-                              <option key={index} value={node.name}>
-                                {node.name}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                      <div className='w-[50%] flex flex-col gap-2 items-center'>
-                        <label className='self-start' htmlFor='toNode'>Hasta</label>
-                        <select
-                          className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-full'
-                          name='toNode'>
-                          {nodes.length > 0 &&
-                            nodes.map((node, index) => (
-                              <option key={index} value={node.name}>
-                                {node.name}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className='flex items-center gap-10'>
-                      <div className='flex flex-col gap-1 w-[50%]'>
-                        <label className='self-start' htmlFor='weight'>Peso de la arista</label>
-                        <input
-                          type='number'
-                          className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-fit'
-                          name='weight'
-                          id='weight'
-                          value={edgeWeight}
-                          onChange={(e) => setEdgeWeight(parseFloat(e.target.value))} />
-                      </div>
-                      <div className='flex flex-col gap-1 w-[50%] items-start'>
-                        <label htmlFor="bothDirections">Ambas Direcciones</label>
-                        <input
-                          type="checkbox"
-                          checked={addBothDirections}
-                          onChange={() => setAddBothDirections(!addBothDirections)}
-                          className='border-2 border-gray-400 bg-transparent'
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <button
-                    type='submit'
-                    className='bg-gray-200 text-black hover:bg-gray-300 transition-all px-8 py-2 rounded-md w-fit font-bold'>
-                    Conectar
+    <>
+      <div className='flex h-screen'>
+        <MagicMotion>
+          <aside className='w-[30%] rounded-md p-5 flex flex-col gap-10 overflow-y-scroll px-10'>
+            <h1 className='font-extrabold text-2xl self-start py-4'>Herramientas</h1>
+            <div className='flex flex-col gap-20'>
+              <div className='flex flex-col gap-5'>
+                <div onClick={handleShowForm} className='flex text-xl font-semibold text-violet-400 items-center gap-2 cursor-pointer'>
+                  <button>
+                    Añadir Nodo
                   </button>
-                </form>
-              )}
-              <hr />
-            </div>
+                  {isShowForm ? <ChevronDown /> : <ChevronUp />}
+                </div>
 
-            <div className='flex flex-col gap-5'>
-              <div onClick={handleShowActions} className='flex text-xl items-center gap-2 cursor-pointer'>
-                <button>
-                  Ejecutar Acciones
-                </button>
-                {isShowActions ? <ChevronDown /> : <ChevronUp />}
+                {isShowForm && (
+                  <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
+                    <div className='flex flex-col gap-2'>
+                      <label className='self-start' htmlFor='numNodes'>Nombre del nodo</label>
+                      <input
+                        onChange={handleNodes}
+                        value={nodeName}
+                        placeholder='A, B, C, ...'
+                        className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2'
+                        name='numNodes'
+                        id='numNodes' />
+                    </div>
+                    <button className='bg-gray-200 transition-all hover:bg-gray-300 text-black px-8 py-2 rounded-md w-fit font-bold'>Añadir</button>
+                  </form>
+                )}
+                <hr />
+              </div>
+              <div className='flex flex-col gap-5'>
+                <div onClick={handleShowFormArista} className='flex font-semibold text-violet-400 items-center gap-2 text-xl cursor-pointer'>
+                  <button>
+                    Añadir Arista
+                  </button>
+                  {isShowFormArista ? <ChevronDown /> : <ChevronUp />}
+                </div>
+                {isShowFormArista && (
+                  <form className='flex flex-col gap-5' onSubmit={handleConnectNodes}>
+                    <div className='flex flex-col gap-2'>
+                      <div className='flex gap-5'>
+                        <div className='w-[50%] flex flex-col gap-2 items-center'>
+                          <label className='self-start' htmlFor='fromNode'>Desde</label>
+                          <select
+                            className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-full'
+                            name='fromNode'>
+                            {nodes.length > 0 &&
+                              nodes.map((node, index) => (
+                                <option key={index} value={node.name}>
+                                  {node.name}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                        <div className='w-[50%] flex flex-col gap-2 items-center'>
+                          <label className='self-start' htmlFor='toNode'>Hasta</label>
+                          <select
+                            className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-full'
+                            name='toNode'>
+                            {nodes.length > 0 &&
+                              nodes.map((node, index) => (
+                                <option key={index} value={node.name}>
+                                  {node.name}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                      </div>
+                      <div className='flex items-center gap-10'>
+                        <div className='flex flex-col gap-1 w-[50%]'>
+                          <label className='self-start' htmlFor='weight'>Peso de la arista</label>
+                          <input
+                            type='number'
+                            className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-fit'
+                            name='weight'
+                            id='weight'
+                            value={edgeWeight}
+                            onChange={(e) => setEdgeWeight(parseFloat(e.target.value))} />
+                        </div>
+                        <div className='flex flex-col gap-1 w-[50%] items-start'>
+                          <label htmlFor="bothDirections">Ambas Direcciones</label>
+                          <input
+                            type="checkbox"
+                            checked={addBothDirections}
+                            onChange={() => setAddBothDirections(!addBothDirections)}
+                            className='border-2 border-gray-400 bg-transparent'
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      type='submit'
+                      className='bg-gray-200 text-black hover:bg-gray-300 transition-all px-8 py-2 rounded-md w-fit font-bold'>
+                      Conectar
+                    </button>
+                  </form>
+                )}
+                <hr />
               </div>
 
-              {isShowActions && (
-                <div className='flex flex-col gap-10'>
+              <div className='flex flex-col gap-5'>
+                <div onClick={handleShowActions} className='flex text-xl font-semibold text-violet-400 items-center gap-2 cursor-pointer'>
+                  <button>
+                    Ejecutar Acciones
+                  </button>
+                  {isShowActions ? <ChevronDown /> : <ChevronUp />}
+                </div>
 
-                  <div className='flex flex-col gap-1 items-start'>
-                    <label className='font-semibold' htmlFor="">Prim</label>
-                    <div className='flex flex-col gap-2 mx-2'>
-                      <button onClick={handleRunPrim} className='bg-violet-400 px-4 py-2 rounded-md'>
-                        Ejecutar Prim
-                      </button>
+                {isShowActions && (
+                  <div className='flex flex-col gap-10'>
+
+                    <div className='flex flex-col gap-1 items-start'>
+                      <label className='font-semibold' htmlFor="">Prim</label>
+                      <div className='flex flex-col gap-2 mx-2'>
+                        <button onClick={handleRunPrim} className='bg-violet-400 px-4 py-2 rounded-md'>
+                          Ejecutar Prim
+                        </button>
+                      </div>
+                      <hr className='w-[70%] mt-2' />
                     </div>
-                    <hr className='w-[70%] mt-2' />
+
+                    <div className='flex flex-col gap-1 items-start'>
+                      <label className='font-semibold' htmlFor="">Kruskal</label>
+                      <div className='flex flex-col gap-2 mx-2'>
+                        <button onClick={handleRunKruskal} className='bg-violet-400 px-4 py-2 rounded-md'>
+                          Ejecutar Kruskal
+                        </button>
+                      </div>
+                      <hr className='w-[70%] mt-2' />
+                    </div>
+
+                    <div className='flex flex-col gap-1 items-start'>
+                      <label className='font-semibold' htmlFor="">Dijkstra</label>
+                      <div className='flex flex-col gap-2 mx-2'>
+                        <label className='self-start' htmlFor='fromNode'>Nodo Inicio</label>
+                        <input type="text" className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-fit' onChange={handleStartDijkstraNode} />
+                        <button onClick={() => handleRunDijkstra(startDijkstraNode)} className='bg-violet-400 px-4 py-2 rounded-md'>
+                          Ejecutar Dijkstra
+                        </button>
+                      </div>
+                      <hr className='w-[70%] mt-2' />
+                    </div>
+
+                    <div className='flex flex-col gap-1 items-start'>
+                      <label className='font-semibold' htmlFor="">Restaurar Grafo</label>
+                      <div className='flex flex-col gap-2 mx-2'>
+                        <button onClick={handleRollBackGraph} className='bg-violet-400 px-4 py-2 rounded-md'>
+                          Volver al Grafo Inicial
+                        </button>
+                      </div>
+                      <hr className='w-[70%] mt-2' />
+                    </div>
+
+                    <div className='flex flex-col gap-1 items-start'>
+                      <label className='font-semibold' htmlFor="">Limpiar Grafo</label>
+                      <div className='flex flex-col gap-2 mx-2'>
+                        <button onClick={handleResetGraph} className='bg-violet-400 px-4 py-2 rounded-md'>
+                          Limpiar Grafo
+                        </button>
+                      </div>
+                      <hr className='w-[70%] mt-2' />
+                    </div>
                   </div>
+                )}
+              </div>
+            </div>
 
-                  <div className='flex flex-col gap-1 items-start'>
-                    <label className='font-semibold' htmlFor="">Kruskal</label>
-                    <div className='flex flex-col gap-2 mx-2'>
-                      <button onClick={handleRunKruskal} className='bg-violet-400 px-4 py-2 rounded-md'>
-                        Ejecutar Kruskal
-                      </button>
-                    </div>
-                    <hr className='w-[70%] mt-2' />
-                  </div>
+          </aside >
+        </MagicMotion>
+        <main className='w-[70%]'>
 
-                  <div className='flex flex-col gap-1 items-start'>
-                    <label className='font-semibold' htmlFor="">Dijkstra</label>
-                    <div className='flex flex-col gap-2 mx-2'>
-                      <label className='self-start' htmlFor='fromNode'>Nodo Inicio</label>
-                      <input type="text" className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-fit' onChange={handleStartDijkstraNode} />
-                      <button onClick={() => handleRunDijkstra(startDijkstraNode)} className='bg-violet-400 px-4 py-2 rounded-md'>
-                        Ejecutar Dijkstra
-                      </button>
-                    </div>
-                    <hr className='w-[70%] mt-2' />
-                  </div>
+          <header>
+            <Navbar />
+          </header>
 
-                  <div className='flex flex-col gap-1 items-start'>
-                    <label className='font-semibold' htmlFor="">Restaurar Grafo</label>
-                    <div className='flex flex-col gap-2 mx-2'>
-                      <button onClick={handleRollBackGraph} className='bg-violet-400 px-4 py-2 rounded-md'>
-                        Volver al Grafo Inicial
-                      </button>
-                    </div>
-                    <hr className='w-[70%] mt-2' />
-                  </div>
-
-                  <div className='flex flex-col gap-1 items-start'>
-                    <label className='font-semibold' htmlFor="">Limpiar Grafo</label>
-                    <div className='flex flex-col gap-2 mx-2'>
-                      <button onClick={handleResetGraph} className='bg-violet-400 px-4 py-2 rounded-md'>
-                        Limpiar Grafo
-                      </button>
-                    </div>
-                    <hr className='w-[70%] mt-2' />
+          <div >
+            <div>
+              {nodes.length > 0 ? (
+                <div className='graph-container'>
+                  <Graphviz dot={dotGraph} options={{ width: 600, height: 400 }} />
+                </div>
+              ) : (
+                <div className='flex flex-col gap-10 items-center py-20'>
+                  <span className='text-xl'>No hay ningun un grafo cargado!</span>
+                  <span>Prueba agregandolo en el menú herramientas.</span>
+                  <div className='w-[400px]'>
+                    <img src="https://res.cloudinary.com/dotaebdx8/image/upload/v1699224953/empty_tovhdf.svg" alt="" />
                   </div>
                 </div>
               )}
             </div>
           </div>
-
-        </aside >
-      </MagicMotion>
-      <div className='w-[70%]'>
-        <div>
-          {nodes.length > 0 ? (
-            <div className='graph-container'>
-              <Graphviz dot={dotGraph} options={{ width: 600, height: 400 }} />
-            </div>
-          ) : (
-            <div className='flex flex-col gap-10 items-center py-20'>
-              <span className='text-xl'>No hay ningun un grafo cargado!</span>
-              <span>Prueba agregandolo en el menú herramientas.</span>
-              <div className='w-[400px]'>
-                <img src="https://res.cloudinary.com/dotaebdx8/image/upload/v1699224953/empty_tovhdf.svg" alt="" />
-              </div>
-            </div>
-          )}
-        </div>
+        </main>
       </div>
-    </div >
+      <footer>
+
+      </footer>
+    </>
+
 
   );
 };
