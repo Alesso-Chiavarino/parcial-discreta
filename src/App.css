@@ -26,6 +26,29 @@
   /* Cambia el color de relleno a rojo (#ff0000) */
 }
 
+select {
+  cursor: pointer;
+  appearance: none;
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+/* Estilo para el casillero cuando está marcado (cambia el fondo de color) */
+input[type="checkbox"]:checked {
+  background-color: #8B5CF6;
+}
+
 .graph-container ellipse {
   stroke: #fff;
 }
