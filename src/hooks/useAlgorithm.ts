@@ -1,6 +1,10 @@
 import { Connection, DisjointSet, Node } from "../types/graph";
+import { useState } from "react";
 
 export const useAlgorithm = (nodes: Node[]) => {
+
+    const [isMSTAlgorithm, setIsMSTAlgorithm] = useState(false);
+    const [minWeight, setMinWeight] = useState(0);
 
     const makeSet = (n: number): DisjointSet[] => {
         return Array(n)
@@ -32,6 +36,7 @@ export const useAlgorithm = (nodes: Node[]) => {
     };
 
     const kruskalAlgorithm = (nodes: Node[], connections: Connection[]): Connection[] => {
+        setIsMSTAlgorithm(true);
         connections.sort((a, b) => a.weight - b.weight);
         const selectedEdges: Connection[] = [];
         const disjointSets = makeSet(nodes.length);
@@ -48,6 +53,8 @@ export const useAlgorithm = (nodes: Node[]) => {
                 union(disjointSets, rootA, rootB);
             }
         }
+
+        setMinWeight(selectedEdges.reduce((acc, edge) => acc + edge.weight, 0));
 
         return selectedEdges;
     };
@@ -74,6 +81,8 @@ export const useAlgorithm = (nodes: Node[]) => {
     }
 
     const primAlgorithm = (adjacencyMatrix: number[][]) => {
+        setIsMSTAlgorithm(true);
+
         const numNodes = adjacencyMatrix.length;
         const selectedNodes = new Array(numNodes).fill(false);
         const selectedEdges: Connection[] = [];
@@ -107,10 +116,15 @@ export const useAlgorithm = (nodes: Node[]) => {
             }
         }
 
+        setMinWeight(selectedEdges.reduce((acc, edge) => acc + edge.weight, 0));
+
         return selectedEdges;
     };
 
     const dijkstraAlgorithm = (adjacencyMatrix: number[][], startNode: Node) => {
+
+        setIsMSTAlgorithm(false);
+
         const numNodes = adjacencyMatrix.length;
         const distances: number[] = new Array(numNodes).fill(Infinity);
         const previousNodes: number[] = new Array(numNodes).fill(-1);
@@ -171,6 +185,9 @@ export const useAlgorithm = (nodes: Node[]) => {
         buildAdjacencyMatrix,
         primAlgorithm,
         kruskalAlgorithm,
-        dijkstraAlgorithm
+        dijkstraAlgorithm,
+        isMSTAlgorithm,
+        setIsMSTAlgorithm,
+        minWeight,
     }
 }

@@ -27,7 +27,7 @@ const App = () => {
 
 
 
-  const { buildAdjacencyMatrix, primAlgorithm, kruskalAlgorithm, dijkstraAlgorithm } = useAlgorithm(nodes);
+  const { buildAdjacencyMatrix, primAlgorithm, kruskalAlgorithm, dijkstraAlgorithm, isMSTAlgorithm, setIsMSTAlgorithm, minWeight } = useAlgorithm(nodes);
 
 
   const handleNodes = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -137,6 +137,7 @@ const App = () => {
   };
 
   const handleRollBackGraph = () => {
+    setIsMSTAlgorithm(false);
     setNodes([...initialGraph.nodes]);
     setConnections([...initialGraph.connections]);
   };
@@ -148,6 +149,7 @@ const App = () => {
   const handleResetGraph = () => {
     // Restaura el grafo y la matriz a su estado inicial (vacío)
     setNodes([]);
+    setIsMSTAlgorithm(false);
     setConnections([]);
     setAdjacencyMatrix([]);
     setInitialGraph({ nodes: [], connections: [] });
@@ -157,6 +159,7 @@ const App = () => {
 
 
   const handleModelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setIsMSTAlgorithm(false)
     const selected = e.target.value;
     setSelectedModel(selected);
 
@@ -368,13 +371,14 @@ const App = () => {
           <div className='min-h-[90vh]'>
             <div>
               {nodes.length > 0 ? (
-                <div className='graph-container'>
+                <div className='graph-container flex flex-col'>
+                  {isMSTAlgorithm && (<span className='self-end p-5 font-semibold'>PESO MINIMO: {minWeight}</span>)}
                   <Graphviz dot={dotGraph} options={{ width: 600, height: 400 }} />
                 </div>
               ) : (
                 <div className='flex flex-col gap-10 items-center py-20'>
-                  <span className='text-xl'>No hay ningun un grafo cargado!</span>
-                  <span>Prueba agregandolo en el menú herramientas.</span>
+                  <span className='text-2xl font-semibold'>No hay ningun un grafo cargado!</span>
+                  <span className='text-md text-gray-300'>Prueba agregandolo en el menú de herramientas.</span>
                   <div className='w-[400px]'>
                     <img src="https://res.cloudinary.com/dotaebdx8/image/upload/v1699224953/empty_tovhdf.svg" alt="" />
                   </div>
