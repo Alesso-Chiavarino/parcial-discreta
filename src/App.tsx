@@ -378,15 +378,16 @@ const App = () => {
                                         ) : null}
 
 
-                                        <div className='flex flex-col gap-1 items-start'>
-                                            <label className='font-semibold' htmlFor="">Limpiar Grafo</label>
-                                            <div className='flex flex-col gap-2 mx-2'>
-                                                <button onClick={handleResetGraph} className='font-bold transition-all duration-200 bg-violet-400 hover:bg-gray-200 hover:text-black  hover_bg- px-4 py-2 rounded-md'>
-                                                    Limpiar Grafo
-                                                </button>
-                                            </div>
-                                            <hr className='w-[70%] mt-2' />
-                                        </div>
+                                        {nodes.length > 0 && (
+                                            <div className='flex flex-col gap-1 items-start'>
+                                                <label className='font-semibold' htmlFor="">Limpiar Grafo</label>
+                                                <div className='flex flex-col gap-2 mx-2'>
+                                                    <button onClick={handleResetGraph} className='font-bold transition-all duration-200 bg-violet-400 hover:bg-gray-200 hover:text-black  hover_bg- px-4 py-2 rounded-md'>
+                                                        Limpiar Grafo
+                                                    </button>
+                                                </div>
+                                                <hr className='w-[70%] mt-2' />
+                                            </div>)}
 
                                         <div className='flex flex-col gap-1 items-start'>
                                             <label className='font-semibold' htmlFor="selectModel">Seleccionar Modelo de Grafo</label>
