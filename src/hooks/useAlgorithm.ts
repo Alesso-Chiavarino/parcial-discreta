@@ -4,6 +4,7 @@ import { useState } from "react";
 export const useAlgorithm = (nodes: Node[]) => {
 
     const [isMSTAlgorithm, setIsMSTAlgorithm] = useState(false);
+    const [isDijkstraAlgorithm, setIsDijkstraAlgorithm] = useState(false);
     const [minWeight, setMinWeight] = useState(0);
 
     const makeSet = (n: number): DisjointSet[] => {
@@ -37,6 +38,7 @@ export const useAlgorithm = (nodes: Node[]) => {
 
     const kruskalAlgorithm = (nodes: Node[], connections: Connection[]): Connection[] => {
         setIsMSTAlgorithm(true);
+        setIsDijkstraAlgorithm(false);
         connections.sort((a, b) => a.weight - b.weight);
         const selectedEdges: Connection[] = [];
         const disjointSets = makeSet(nodes.length);
@@ -82,6 +84,7 @@ export const useAlgorithm = (nodes: Node[]) => {
 
     const primAlgorithm = (adjacencyMatrix: number[][]) => {
         setIsMSTAlgorithm(true);
+        setIsDijkstraAlgorithm(false);
 
         const numNodes = adjacencyMatrix.length;
         const selectedNodes = new Array(numNodes).fill(false);
@@ -124,6 +127,7 @@ export const useAlgorithm = (nodes: Node[]) => {
     const dijkstraAlgorithm = (adjacencyMatrix: number[][], startNode: Node) => {
 
         setIsMSTAlgorithm(false);
+        setIsDijkstraAlgorithm(true);
 
         const numNodes = adjacencyMatrix.length;
         const distances: number[] = new Array(numNodes).fill(Infinity);
@@ -188,6 +192,8 @@ export const useAlgorithm = (nodes: Node[]) => {
         dijkstraAlgorithm,
         isMSTAlgorithm,
         setIsMSTAlgorithm,
+        isDijkstraAlgorithm,
+        setIsDijkstraAlgorithm,
         minWeight,
     }
 }

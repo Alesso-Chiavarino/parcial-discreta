@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Connection, Node } from './types/graph';
 import { useAlgorithm } from './hooks/useAlgorithm';
 import { MagicMotion } from "react-magic-motion";
-import { ChevronDown, ChevronUp } from './icons/Icons';
+import { ChevronDown, ChevronUp, CollapseDown, CollapseUp } from './icons/Icons';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { graphModels } from './models/graph.models';
@@ -16,6 +16,7 @@ const App = () => {
     const [isShowForm, setIsShowForm] = useState<boolean>(true);
     const [isShowFormArista, setIsShowFormArista] = useState<boolean>(true);
     const [isShowActions, setIsShowActions] = useState<boolean>(true);
+    const [isShowCollapse, setIsShowCollapse] = useState<boolean>(true);
     const [connections, setConnections] = useState<Connection[]>([]);
     const [edgeWeight, setEdgeWeight] = useState<number>(1);
     const [addBothDirections, setAddBothDirections] = useState<boolean>(false);
@@ -27,7 +28,7 @@ const App = () => {
     const [dijkstraResults, setDijkstraResults] = useState<{ node: string; distance: number }[]>([]);
 
 
-    const { buildAdjacencyMatrix, primAlgorithm, kruskalAlgorithm, dijkstraAlgorithm, setIsMSTAlgorithm, minWeight } = useAlgorithm(nodes);
+    const { buildAdjacencyMatrix, primAlgorithm, kruskalAlgorithm, dijkstraAlgorithm, setIsMSTAlgorithm, minWeight, isMSTAlgorithm, isDijkstraAlgorithm, setIsDijkstraAlgorithm } = useAlgorithm(nodes);
 
 
     const handleNodes = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,6 +78,14 @@ const App = () => {
         setInitialGraph((prev) => ({ nodes: prev.nodes, connections: updatedConnections }));
     };
 
+    const handleCollapseForms = () => {
+
+        setIsShowCollapse(!isShowCollapse);
+
+        isShowForm ? setIsShowForm(false) : setIsShowForm(true);
+        isShowFormArista ? setIsShowFormArista(false) : setIsShowFormArista(true);
+        isShowActions ? setIsShowActions(false) : setIsShowActions(true);
+    }
 
     const handleRunPrim = () => {
         const primEdges = primAlgorithm(adjacencyMatrix);
@@ -163,6 +172,7 @@ const App = () => {
 
     const handleRollBackGraph = () => {
         setIsMSTAlgorithm(false);
+        setIsDijkstraAlgorithm(false)
         setNodes([...initialGraph.nodes]);
         setConnections([...initialGraph.connections]);
         setDijkstraResults([]);
@@ -207,7 +217,10 @@ const App = () => {
             <div className='flex h-screen'>
                 <MagicMotion>
                     <aside className='w-[30%] rounded-md p-5 flex flex-col gap-10 overflow-y-scroll px-10'>
-                        <h1 className='font-extrabold text-2xl self-start py-4'>Herramientas</h1>
+                        <div className='flex justify-between items-center'>
+                            <h1 className='font-extrabold text-2xl self-start py-4'>Herramientas</h1>
+                            <span className='cursor-pointer' onClick={handleCollapseForms}>{isShowCollapse ? <CollapseDown /> : <CollapseUp />}</span>
+                        </div>
                         <div className='flex flex-col gap-20'>
                             <div className='flex flex-col gap-5'>
                                 <div onClick={handleShowForm} className='flex text-xl font-semibold text-violet-400 items-center gap-2 cursor-pointer'>
@@ -229,7 +242,7 @@ const App = () => {
                                                 name='numNodes'
                                                 id='numNodes' />
                                         </div>
-                                        <button className='bg-gray-200 transition-all hover:bg-gray-300 text-black px-8 py-2 rounded-md w-fit font-bold'>Añadir</button>
+                                        <button className='bg-gray-200 transition-all hover:bg-violet-400 duration-200 hover:text-white text-black px-8 py-2 rounded-md w-fit font-bold'>Añadir</button>
                                     </form>
                                 )}
                                 <hr />
@@ -296,7 +309,7 @@ const App = () => {
                                         </div>
                                         <button
                                             type='submit'
-                                            className='bg-gray-200 text-black hover:bg-gray-300 transition-all px-8 py-2 rounded-md w-fit font-bold'>
+                                            className='bg-gray-200 transition-all hover:bg-violet-400 duration-200 hover:text-white text-black px-8 py-2 rounded-md w-fit font-bold'>
                                             Conectar
                                         </button>
                                     </form>
@@ -318,7 +331,7 @@ const App = () => {
                                         <div className='flex flex-col gap-1 items-start'>
                                             <label className='font-semibold' htmlFor="">Prim</label>
                                             <div className='flex flex-col gap-2 mx-2'>
-                                                <button onClick={handleRunPrim} className='bg-violet-400 font-semibold hover_bg- px-4 py-2 rounded-md'>
+                                                <button onClick={handleRunPrim} className='font-bold transition-all duration-200 bg-violet-400 hover:bg-gray-200 hover:text-black  hover_bg- px-4 py-2 rounded-md'>
                                                     Ejecutar Prim
                                                 </button>
                                             </div>
@@ -328,7 +341,7 @@ const App = () => {
                                         <div className='flex flex-col gap-1 items-start'>
                                             <label className='font-semibold' htmlFor="">Kruskal</label>
                                             <div className='flex flex-col gap-2 mx-2'>
-                                                <button onClick={handleRunKruskal} className='bg-violet-400 font-semibold hover_bg- px-4 py-2 rounded-md'>
+                                                <button onClick={handleRunKruskal} className='font-bold transition-all duration-200 bg-violet-400 hover:bg-gray-200 hover:text-black  hover_bg- px-4 py-2 rounded-md'>
                                                     Ejecutar Kruskal
                                                 </button>
                                             </div>
@@ -345,27 +358,30 @@ const App = () => {
                                                     onChange={handleStartDijkstraNode}
                                                     placeholder='Inserte el nodo de inicio'
                                                 />
-                                                <button onClick={() => handleRunDijkstra(startDijkstraNode)} className='bg-violet-400 font-semibold hover_bg- px-4 py-2 rounded-md'>
+                                                <button onClick={() => handleRunDijkstra(startDijkstraNode)} className='font-bold transition-all duration-200 bg-violet-400 hover:bg-gray-200 hover:text-black  hover_bg- px-4 py-2 rounded-md'>
                                                     Ejecutar Dijkstra
                                                 </button>
                                             </div>
                                             <hr className='w-[70%] mt-2' />
                                         </div>
 
-                                        <div className='flex flex-col gap-1 items-start'>
-                                            <label className='font-semibold' htmlFor="">Restaurar Grafo</label>
-                                            <div className='flex flex-col gap-2 mx-2'>
-                                                <button onClick={handleRollBackGraph} className='bg-violet-400 font-semibold hover_bg- px-4 py-2 rounded-md'>
-                                                    Volver al Grafo Inicial
-                                                </button>
+                                        {isMSTAlgorithm || isDijkstraAlgorithm ? (
+                                            <div className='flex flex-col gap-1 items-start'>
+                                                <label className='font-semibold' htmlFor="">Restaurar Grafo</label>
+                                                <div className='flex flex-col gap-2 mx-2'>
+                                                    <button onClick={handleRollBackGraph} className='font-bold transition-all duration-200 bg-violet-400 hover:bg-gray-200 hover:text-black  hover_bg- px-4 py-2 rounded-md'>
+                                                        Volver al Grafo Inicial
+                                                    </button>
+                                                </div>
+                                                <hr className='w-[70%] mt-2' />
                                             </div>
-                                            <hr className='w-[70%] mt-2' />
-                                        </div>
+                                        ) : null}
+
 
                                         <div className='flex flex-col gap-1 items-start'>
                                             <label className='font-semibold' htmlFor="">Limpiar Grafo</label>
                                             <div className='flex flex-col gap-2 mx-2'>
-                                                <button onClick={handleResetGraph} className='bg-violet-400 font-semibold hover_bg- px-4 py-2 rounded-md'>
+                                                <button onClick={handleResetGraph} className='font-bold transition-all duration-200 bg-violet-400 hover:bg-gray-200 hover:text-black  hover_bg- px-4 py-2 rounded-md'>
                                                     Limpiar Grafo
                                                 </button>
                                             </div>
