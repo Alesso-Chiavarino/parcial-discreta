@@ -288,7 +288,7 @@ const App = () => {
                     <div className='flex flex-col gap-1 items-start'>
                       <label className='font-semibold' htmlFor="">Prim</label>
                       <div className='flex flex-col gap-2 mx-2'>
-                        <button onClick={handleRunPrim} className='bg-violet-400 hover_bg- px-4 py-2 rounded-md'>
+                        <button onClick={handleRunPrim} className='bg-violet-400 font-semibold hover_bg- px-4 py-2 rounded-md'>
                           Ejecutar Prim
                         </button>
                       </div>
@@ -298,7 +298,7 @@ const App = () => {
                     <div className='flex flex-col gap-1 items-start'>
                       <label className='font-semibold' htmlFor="">Kruskal</label>
                       <div className='flex flex-col gap-2 mx-2'>
-                        <button onClick={handleRunKruskal} className='bg-violet-400 hover_bg- px-4 py-2 rounded-md'>
+                        <button onClick={handleRunKruskal} className='bg-violet-400 font-semibold hover_bg- px-4 py-2 rounded-md'>
                           Ejecutar Kruskal
                         </button>
                       </div>
@@ -310,7 +310,7 @@ const App = () => {
                       <div className='flex flex-col gap-2 mx-2'>
                         <label className='self-start' htmlFor='fromNode'>Nodo Inicio</label>
                         <input type="text" className=' bg-transparent border-[1px] border-gray-100 rounded-lg placeholder:text-gray-300 py-1 px-2 w-fit' onChange={handleStartDijkstraNode} />
-                        <button onClick={() => handleRunDijkstra(startDijkstraNode)} className='bg-violet-400 hover_bg- px-4 py-2 rounded-md'>
+                        <button onClick={() => handleRunDijkstra(startDijkstraNode)} className='bg-violet-400 font-semibold hover_bg- px-4 py-2 rounded-md'>
                           Ejecutar Dijkstra
                         </button>
                       </div>
@@ -320,7 +320,7 @@ const App = () => {
                     <div className='flex flex-col gap-1 items-start'>
                       <label className='font-semibold' htmlFor="">Restaurar Grafo</label>
                       <div className='flex flex-col gap-2 mx-2'>
-                        <button onClick={handleRollBackGraph} className='bg-violet-400 hover_bg- px-4 py-2 rounded-md'>
+                        <button onClick={handleRollBackGraph} className='bg-violet-400 font-semibold hover_bg- px-4 py-2 rounded-md'>
                           Volver al Grafo Inicial
                         </button>
                       </div>
@@ -330,7 +330,7 @@ const App = () => {
                     <div className='flex flex-col gap-1 items-start'>
                       <label className='font-semibold' htmlFor="">Limpiar Grafo</label>
                       <div className='flex flex-col gap-2 mx-2'>
-                        <button onClick={handleResetGraph} className='bg-violet-400 hover_bg- px-4 py-2 rounded-md'>
+                        <button onClick={handleResetGraph} className='bg-violet-400 font-semibold hover_bg- px-4 py-2 rounded-md'>
                           Limpiar Grafo
                         </button>
                       </div>
