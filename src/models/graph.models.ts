@@ -1,4 +1,38 @@
 export const graphModels = {
+    ej_1_b: {
+        nodes: [{ name: 'A' }, { name: 'B' }, { name: 'C' }, { name: 'D' }, { name: 'E' }, { name: 'F' }, { name: 'G' }, { name: 'H' }, { name: 'I' }, { name: 'J' }],
+        connections: [
+            { from: 'A', to: 'B', weight: 2 },
+            { from: 'B', to: 'A', weight: 2 },
+            { from: 'A', to: 'G', weight: 3 },
+            { from: 'G', to: 'A', weight: 3 },
+            { from: 'B', to: 'C', weight: 2 },
+            { from: 'C', to: 'B', weight: 2 },
+            { from: 'B', to: 'F', weight: 4 },
+            { from: 'F', to: 'B', weight: 4 },
+            { from: 'C', to: 'D', weight: 4 },
+            { from: 'D', to: 'C', weight: 4 },
+            { from: 'B', to: 'D', weight: 3 },
+            { from: 'D', to: 'B', weight: 3 },
+            { from: 'F', to: 'G', weight: 2 },
+            { from: 'G', to: 'F', weight: 2 },
+            { from: 'G', to: 'H', weight: 3 },
+            { from: 'H', to: 'G', weight: 3 },
+            { from: 'G', to: 'J', weight: 2 },
+            { from: 'J', to: 'G', weight: 2 },
+            { from: 'H', to: 'J', weight: 5 },
+            { from: 'J', to: 'H', weight: 5 },
+            { from: 'D', to: 'E', weight: 3 },
+            { from: 'E', to: 'D', weight: 3 },
+            { from: 'I', to: 'H', weight: 1 },
+            { from: 'H', to: 'I', weight: 1 },
+
+            { from: 'I', to: 'D', weight: 4 },
+            { from: 'D', to: 'I', weight: 4 },
+            { from: 'E', to: 'H', weight: 2 },
+            { from: 'H', to: 'E', weight: 2 },
+        ],
+    },
     ej_1_c_and_2_b: {
         nodes: [{ name: 'A' }, { name: 'B' }, { name: 'C' }, { name: 'D' }, { name: 'E' }, { name: 'F' }, { name: 'G' }, { name: 'H' }, { name: 'I' }, { name: 'J' }],
         connections: [
